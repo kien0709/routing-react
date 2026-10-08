@@ -20,18 +20,7 @@ export default function Dashboard() {
     <Flex bg="bg.muted" minH="100vh" direction={{ base: "column", md: "row" }}>
       <Sidebar />
 
-      <Box flex="1" minW={0} p={{ base: 4, md: 8 }} position="relative">
-        <Box
-          color="fg"
-          fontSize="15px"
-          fontWeight="medium"
-          left={{ base: "16px", md: "40px" }}
-          opacity={1}
-          position="absolute"
-          top="140px"
-        >
-          {currentDate}
-        </Box>
+      <Box flex="1" minW={0} p={{ base: 4, md: 8 }}>
 
         <Flex
           align={{ base: "stretch", lg: "flex-start" }}
@@ -54,6 +43,10 @@ export default function Dashboard() {
         </Flex>
 
         <Flex align="center" gap={3} justify="flex-end" mb={6} w="100%" wrap="wrap">
+          {/* datum links en de platform knoppen rechts op een kleine telefoon onder elkaar */}
+          <Text color="fg" fontSize="15px" fontWeight="medium" mr="auto" w={{ base: "100%", sm: "auto" }}>
+            {currentDate}
+          </Text>
           <Text color="fg.muted" fontSize="12px">
             Choose Platform :
           </Text>

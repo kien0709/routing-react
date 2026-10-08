@@ -15,6 +15,7 @@ export default function ReviewListRow({ review }: ReviewListRowProps) {
       opacity={1}
       p={4}
       w="100%"
+      wrap={{ base: "wrap", sm: "nowrap" }}
     >
       <Image
         alt={review.product}
@@ -24,7 +25,7 @@ export default function ReviewListRow({ review }: ReviewListRowProps) {
         src={review.image}
         w="88px"
       />
-      <Box flex="1" minW={0}>
+      <Box flex="1" minW="140px">
         <Text color="fg.muted" fontSize="13px" mb={1}>
           Product review
         </Text>
@@ -35,7 +36,7 @@ export default function ReviewListRow({ review }: ReviewListRowProps) {
           Reviewed by {review.reviewer}
         </Text>
       </Box>
-      <Flex align="center" gap={2}>
+      <Flex align="center" gap={2} justify="flex-end" w={{ base: "100%", sm: "auto" }}>
         <Button
           bg="var(--color-primary)"
           borderRadius="10px"

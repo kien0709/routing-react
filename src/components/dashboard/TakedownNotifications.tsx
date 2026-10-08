@@ -7,7 +7,7 @@ export default function TakedownNotifications() {
       bg="bg.panel"
       borderTopLeftRadius="24px"
       borderTopRightRadius="24px"
-      h="260px"
+      minH="260px"
       opacity={1}
       p={6}
       w="100%"
@@ -29,6 +29,7 @@ export default function TakedownNotifications() {
                   fontSize="13px"
                   href={notification.link}
                   lineHeight="1.5"
+                  wordBreak="break-all"
                 >
                   {notification.link}
                 </Link>

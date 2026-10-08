@@ -15,6 +15,7 @@ export default function LoadingScreen() {
         gap={3}
         minH={{ base: "auto", md: "100vh" }}
         p={5}
+        pt={{ base: "calc(env(safe-area-inset-top) + 20px)", md: 5 }}
         w={{ base: "100%", md: "210px" }}
       >
         <Skeleton height="28px" mb={5} width="70%" />

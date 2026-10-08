@@ -5,7 +5,7 @@ export default function TopAdminCard() {
     <Box
       bg="bg.panel"
       borderRadius="24px"
-      h="236px"
+      minH="236px"
       opacity={1}
       p={6}
       w="100%"
@@ -36,7 +36,7 @@ export default function TopAdminCard() {
           </Box>
         </Stack>
 
-        <Box flex={{ base: "1 1 215px", lg: "0 0 215px" }} minW="215px" opacity={1}>
+        <Box flex={{ base: "1 1 180px", lg: "0 0 215px" }} minW={0} opacity={1}>
           <Group gap={3} orientation="vertical" w="100%">
             <Button
               bg="bg.muted"
@@ -49,7 +49,7 @@ export default function TopAdminCard() {
               px={5}
               size="sm"
               variant="outline"
-              w="215px"
+              w={{ base: "100%", lg: "215px" }}
               _hover={{ bg: "bg.muted" }}
             >
               <Text color="fg.muted" fontSize="13px" fontWeight="medium">
@@ -70,7 +70,7 @@ export default function TopAdminCard() {
               opacity={1}
               size="sm"
               variant="solid"
-              w="215px"
+              w={{ base: "100%", lg: "215px" }}
               _hover={{ bg: "var(--color-primary-hover)" }}
             >
               View Details
