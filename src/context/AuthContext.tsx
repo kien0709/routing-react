@@ -13,6 +13,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import { auth } from "../../config/firebase";
 import apiClient, { setOnSessionExpired } from "../api/apiClient";
+import { hideSplashScreen } from "../native";
 
 
 export interface AuthenticatedUser {
@@ -57,6 +58,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
       setFirebaseUser(user);
       setLoading(false);
+      hideSplashScreen();
     });
     return unsubscribe;
   }, []);

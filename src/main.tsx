@@ -6,6 +6,9 @@ import App from './App.tsx'
 import { Provider } from './components/ui/provider.tsx'
 import { Toaster } from './components/ui/toaster.tsx'
 import { AuthProvider } from './context/AuthContext.tsx'
+import { initNative } from './native.ts'
+
+initNative()
 
 const queryClient = new QueryClient({
   defaultOptions: {

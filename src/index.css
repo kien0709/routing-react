@@ -1,4 +1,9 @@
 :root {
+  /* safe area van de telefoon in de app zet src native ts deze met de safe area plugin */
+  --safe-area-inset-top: env(safe-area-inset-top, 0px);
+  --safe-area-inset-right: env(safe-area-inset-right, 0px);
+  --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-area-inset-left: env(safe-area-inset-left, 0px);
   --color-primary: #6c63f6;
   --color-primary-hover: #5b52e8;
   --color-source: #161819;
@@ -19,6 +24,13 @@ body,
 #root {
   margin: 0;
   min-height: 100%;
+}
+
+/* niks onder de home balk of de android navigatiebalk en de notch als je de telefoon draait */
+#root {
+  padding-bottom: var(--safe-area-inset-bottom);
+  padding-left: var(--safe-area-inset-left);
+  padding-right: var(--safe-area-inset-right);
 }
 
 body {

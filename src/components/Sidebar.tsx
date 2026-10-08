@@ -50,7 +50,7 @@ export default function Sidebar() {
         gap={2}
         pb={3}
         position="sticky"
-        pt="calc(env(safe-area-inset-top) + 12px)"
+        pt="calc(var(--safe-area-inset-top) + 12px)"
         px={4}
         top={0}
         zIndex="sticky"
@@ -68,9 +68,9 @@ export default function Sidebar() {
         <Portal>
           <Drawer.Backdrop />
           <Drawer.Positioner>
-            <Drawer.Content pt="env(safe-area-inset-top)" pb="env(safe-area-inset-bottom)">
+            <Drawer.Content pt="var(--safe-area-inset-top)" pb="var(--safe-area-inset-bottom)">
               <SidebarContent onNavigate={() => setMenuOpen(false)} />
-              <Drawer.CloseTrigger asChild top="calc(env(safe-area-inset-top) + 16px)">
+              <Drawer.CloseTrigger asChild top="calc(var(--safe-area-inset-top) + 16px)">
                 <CloseButton size="sm" />
               </Drawer.CloseTrigger>
             </Drawer.Content>
