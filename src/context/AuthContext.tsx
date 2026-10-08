@@ -2,12 +2,15 @@ import {
   createUserWithEmailAndPassword,
   GoogleAuthProvider,
   onAuthStateChanged,
+  signInWithCredential,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
   updateProfile,
 } from "firebase/auth";
 import type { User } from "firebase/auth";
+import { Capacitor } from "@capacitor/core";
+import { FirebaseAuthentication } from "@capacitor-firebase/authentication";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
@@ -96,6 +99,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const loginWithGoogle = async () => {
     setSessionExpired(false);
+    // popup werkt niet in de webview van de app dus native inloggen en de token aan de web sdk geven
+    // https://github.com/capawesome-team/capacitor-firebase/blob/main/packages/authentication/docs/firebase-js-sdk.md
+    if (Capacitor.isNativePlatform()) {
+      const result = await FirebaseAuthentication.signInWithGoogle();
+      const idToken = result.credential?.idToken;
+      if (!idToken) throw new Error("Google login gaf geen token terug");
+      await signInWithCredential(auth, GoogleAuthProvider.credential(idToken));
+      return;
+    }
     const provider = new GoogleAuthProvider();
     provider.setCustomParameters({ prompt: "select_account" });
     await signInWithPopup(auth, provider);
@@ -111,6 +123,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     await signOut(auth);
+    // ook native uitloggen anders kies je bij de volgende google login automatisch hetzelfde account
+    if (Capacitor.isNativePlatform()) await FirebaseAuthentication.signOut();
     // alle data van de vorige gebruiker weggooien dus todos users en auth
     queryClient.clear();
   };
