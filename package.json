@@ -12,6 +12,7 @@
   "dependencies": {
     "@capacitor/android": "^8.5.2",
     "@capacitor/core": "^8.5.2",
+    "@capacitor/ios": "^8.5.3",
     "@chakra-ui/charts": "^3.37.0",
     "@chakra-ui/react": "^3.37.0",
     "@emotion/react": "^11.14.0",
