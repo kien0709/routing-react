@@ -5,19 +5,17 @@ import { useAuth } from "../context/AuthContext";
 import { DeviceShake } from "../plugins/deviceShake";
 import ConfirmDialog from "./ConfirmDialog";
 
-// schud je telefoon terwijl je ingelogd bent dan vragen we of je wilt uitloggen
-// niet ingelogd dan luistert de plugin niet dus schudden doet niks
-// alleen in de app want de plugin is native zie src plugins deviceShake ts
+// bij schudden vragen of je wilt uitloggen
 export default function ShakeToLogout() {
   const { isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
 
-  // de listener een keer aanmaken en weer opruimen als de app sluit zoals in de opdracht
   useEffect(() => {
     if (!Capacitor.isNativePlatform()) return;
 
+    // popup openen bij een schud
     DeviceShake.addListener("shake", () => {
       console.log("Device shaken!");
       setOpen(true);
@@ -27,10 +25,10 @@ export default function ShakeToLogout() {
     };
   }, []);
 
-  // alleen naar schudden luisteren als je ingelogd bent
   useEffect(() => {
     if (!Capacitor.isNativePlatform()) return;
 
+    // alleen luisteren als je ingelogd bent
     if (isAuthenticated) DeviceShake.enableListening();
     else DeviceShake.stopListening();
   }, [isAuthenticated]);

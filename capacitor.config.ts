@@ -13,9 +13,8 @@ const config: CapacitorConfig = {
       showSpinner: false,
       androidScaleType: 'CENTER_CROP',
     },
-    // https://github.com/capawesome-team/capacitor-firebase/tree/main/packages/authentication#configuration
+    // google login via de native plugin
     FirebaseAuthentication: {
-      // web SDK blijft de bron van waarheid, native login geeft alleen de credential terug
       skipNativeAuth: true,
       providers: ['google.com'],
     },

@@ -13,7 +13,7 @@ export default function App() {
   return (
     <HashRouter>
       <AnimatedRoutes />
-      {/* schudden om uit te loggen werkt op elke pagina */}
+      {/* schudden om uit te loggen op elke pagina */}
       <ShakeToLogout />
     </HashRouter>
   );

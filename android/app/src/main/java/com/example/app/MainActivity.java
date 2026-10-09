@@ -6,7 +6,7 @@ import com.getcapacitor.BridgeActivity;
 public class MainActivity extends BridgeActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        // eigen plugins moeten voor super.onCreate geregistreerd worden
+        // plugin registreren voor super.onCreate
         registerPlugin(DeviceShakePlugin.class);
         super.onCreate(savedInstanceState);
     }

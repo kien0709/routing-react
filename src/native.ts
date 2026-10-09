@@ -35,8 +35,7 @@ function initHaptics() {
   });
 }
 
-// in de app nooit zoomen anders zoomt ios in bij het tikken in een invoerveld en blijft hij ingezoomd
-// in de browser laten we zoomen wel toe voor toegankelijkheid
+// zoomen uit in de app
 function disableZoom() {
   const viewport = document.querySelector<HTMLMetaElement>('meta[name="viewport"]');
   if (!viewport) return;

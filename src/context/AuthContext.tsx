@@ -99,8 +99,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const loginWithGoogle = async () => {
     setSessionExpired(false);
-    // popup werkt niet in de webview van de app dus native inloggen en de token aan de web sdk geven
-    // https://github.com/capawesome-team/capacitor-firebase/blob/main/packages/authentication/docs/firebase-js-sdk.md
+    // in de app native inloggen popup werkt niet in de webview
     if (Capacitor.isNativePlatform()) {
       const result = await FirebaseAuthentication.signInWithGoogle();
       const idToken = result.credential?.idToken;
@@ -123,7 +122,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     await signOut(auth);
-    // ook native uitloggen anders kies je bij de volgende google login automatisch hetzelfde account
+    // ook native uitloggen
     if (Capacitor.isNativePlatform()) await FirebaseAuthentication.signOut();
     // alle data van de vorige gebruiker weggooien dus todos users en auth
     queryClient.clear();
