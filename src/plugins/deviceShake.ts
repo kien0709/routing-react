@@ -2,7 +2,7 @@ import { registerPlugin } from "@capacitor/core";
 import type { PluginListenerHandle } from "@capacitor/core";
 
 // eigen plugin zie DeviceShakePlugin swift voor ios en java voor android
-// https://capacitorjs.com/docs/ios/custom-code
+// addListener en removeAllListeners geeft capacitor elke plugin
 interface DeviceShakeNative {
   enableListening(): Promise<void>;
   stopListening(): Promise<void>;

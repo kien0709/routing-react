@@ -14,7 +14,7 @@ export default function ShakeToLogout() {
   const [open, setOpen] = useState(false);
   const [loggingOut, setLoggingOut] = useState(false);
 
-  // de listener een keer aanmaken en weer opruimen als de app sluit
+  // de listener een keer aanmaken en weer opruimen als de app sluit zoals in de opdracht
   useEffect(() => {
     if (!Capacitor.isNativePlatform()) return;
 
