@@ -1,4 +1,6 @@
 import { Box, Button, Flex, Grid, GridItem, Heading, Text } from "@chakra-ui/react";
+import { Capacitor } from "@capacitor/core";
+import { useEffect } from "react";
 import { FiArchive, FiBell, FiDatabase } from "react-icons/fi";
 import HeaderActions from "../components/HeaderActions";
 import AnalyticsChart from "../components/dashboard/AnalyticsChart";
@@ -8,8 +10,25 @@ import TakedownNotifications from "../components/dashboard/TakedownNotifications
 import TopAdminCard from "../components/dashboard/TopAdminCard";
 import TopFakeSellersList from "../components/dashboard/TopFakeSellersList";
 import Sidebar from "../components/Sidebar";
+import { toaster } from "../components/ui/toaster";
+import { DeviceShake } from "../plugins/deviceShake";
 
 export default function Dashboard() {
+  // schudden met de telefoon geeft een melding alleen in de app want de plugin is native
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+
+    DeviceShake.addEventListener("shake", () => {
+      toaster.create({ type: "info", title: "Device shaken" });
+    });
+    DeviceShake.enableListening();
+
+    return () => {
+      DeviceShake.stopListening();
+      DeviceShake.removeAllListeners();
+    };
+  }, []);
+
   const currentDate = new Date().toLocaleDateString("en-US", {
     day: "numeric",
     month: "short",
