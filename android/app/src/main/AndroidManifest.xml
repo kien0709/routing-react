@@ -38,4 +38,6 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- trillen bij schudden zie DeviceShakePlugin -->
+    <uses-permission android:name="android.permission.VIBRATE" />
 </manifest>

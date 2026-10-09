@@ -2,6 +2,7 @@ import { HashRouter, Routes, Route, Navigate, useLocation } from "react-router-d
 import PrivateRoute from "./components/PrivateRoute";
 import PublicRoute from "./components/PublicRoute";
 import AdminRoute from "./components/AdminRoute";
+import ShakeToLogout from "./components/ShakeToLogout";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Users from "./pages/Users";
@@ -12,6 +13,8 @@ export default function App() {
   return (
     <HashRouter>
       <AnimatedRoutes />
+      {/* schudden om uit te loggen werkt op elke pagina */}
+      <ShakeToLogout />
     </HashRouter>
   );
 }

@@ -17,5 +17,7 @@ export const DeviceShake = {
   enableListening: () => Native.enableListening(),
   stopListening: () => Native.stopListening(),
   addEventListener: (eventName: "shake", func: () => void) => Native.addListener(eventName, func),
+  // zelfde als addEventListener met de standaard capacitor naam zoals in de opdracht
+  addListener: (eventName: "shake", func: () => void) => Native.addListener(eventName, func),
   removeAllListeners: () => Native.removeAllListeners(),
 };

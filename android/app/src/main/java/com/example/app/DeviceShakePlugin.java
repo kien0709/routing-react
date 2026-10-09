@@ -5,6 +5,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import com.getcapacitor.JSObject;
 import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
@@ -20,12 +23,17 @@ public class DeviceShakePlugin extends Plugin implements SensorEventListener {
     // niet elke meting tijdens een schud als nieuwe schud tellen
     private static final long MIN_INTERVAL_MS = 500;
 
+    // hoe lang trillen bij een schud
+    private static final long VIBRATE_MS = 200;
+
     private SensorManager sensorManager;
+    private Vibrator vibrator;
     private long lastShake = 0;
 
     @Override
     public void load() {
         sensorManager = (SensorManager) getContext().getSystemService(Context.SENSOR_SERVICE);
+        vibrator = (Vibrator) getContext().getSystemService(Context.VIBRATOR_SERVICE);
     }
 
     @PluginMethod
@@ -55,7 +63,20 @@ public class DeviceShakePlugin extends Plugin implements SensorEventListener {
         long now = System.currentTimeMillis();
         if (gForce > SHAKE_THRESHOLD_G && now - lastShake > MIN_INTERVAL_MS) {
             lastShake = now;
+            vibrate();
             notifyListeners("shake", new JSObject());
+        }
+    }
+
+    // trillen als feedback VibrationEffect bestaat pas vanaf android 8
+    // https://developer.android.com/reference/android/os/Vibrator
+    private void vibrate() {
+        if (vibrator == null || !vibrator.hasVibrator()) return;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            vibrator.vibrate(VibrationEffect.createOneShot(VIBRATE_MS, VibrationEffect.DEFAULT_AMPLITUDE));
+        } else {
+            vibrator.vibrate(VIBRATE_MS);
         }
     }
 
