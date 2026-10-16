@@ -1,23 +1,87 @@
-import Foundation
+import AudioToolbox
 import Capacitor
+import CoreMotion
 
-/**
- * Please read the Capacitor iOS Plugin Development Guide
- * here: https://capacitorjs.com/docs/plugins/ios
- */
+// plugin die schudden doorgeeft aan javascript
 @objc(DeviceShakePlugin)
 public class DeviceShakePlugin: CAPPlugin, CAPBridgedPlugin {
     public let identifier = "DeviceShakePlugin"
     public let jsName = "DeviceShake"
     public let pluginMethods: [CAPPluginMethod] = [
-        CAPPluginMethod(name: "echo", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "enableListening", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "stopListening", returnType: CAPPluginReturnPromise),
     ]
-    private let implementation = DeviceShake()
 
-    @objc func echo(_ call: CAPPluginCall) {
-        let value = call.getString("value") ?? ""
-        call.resolve([
-            "value": implementation.echo(value)
-        ])
+    // vanaf hoeveel g het een schud is
+    private let shakeThresholdG = 2.7
+    // minimale tijd tussen twee schuds
+    private let minInterval: TimeInterval = 0.5
+
+    private let motionManager = CMMotionManager()
+    private var isListening = false
+    private var lastShake = Date.distantPast
+
+    // de app stuurt deze notificatie bij de schud van ios (werkt ook in de simulator)
+    public static let shakeNotification = Notification.Name("DeviceShakeMotionShake")
+
+    private var shakeObserver: NSObjectProtocol?
+
+    override public func load() {
+        shakeObserver = NotificationCenter.default.addObserver(forName: Self.shakeNotification, object: nil, queue: .main) { [weak self] _ in
+            self?.handleShake()
+        }
+    }
+
+    // start met luisteren
+    @objc func enableListening(_ call: CAPPluginCall) {
+        DispatchQueue.main.async {
+            self.isListening = true
+            self.startAccelerometer()
+            call.resolve()
+        }
+    }
+
+    // stop met luisteren
+    @objc func stopListening(_ call: CAPPluginCall) {
+        DispatchQueue.main.async {
+            self.isListening = false
+            self.stopAccelerometer()
+            call.resolve()
+        }
+    }
+
+    // accelerometer uitlezen op een echte iphone
+    private func startAccelerometer() {
+        guard motionManager.isAccelerometerAvailable, !motionManager.isAccelerometerActive else { return }
+
+        motionManager.accelerometerUpdateInterval = 1.0 / 50.0
+        motionManager.startAccelerometerUpdates(to: .main) { [weak self] data, _ in
+            guard let self, let acceleration = data?.acceleration else { return }
+            // totale kracht in g
+            let gForce = sqrt(acceleration.x * acceleration.x + acceleration.y * acceleration.y + acceleration.z * acceleration.z)
+            if gForce > self.shakeThresholdG {
+                self.handleShake()
+            }
+        }
+    }
+
+    private func stopAccelerometer() {
+        if motionManager.isAccelerometerActive {
+            motionManager.stopAccelerometerUpdates()
+        }
+    }
+
+    // trillen en de schud naar javascript sturen
+    private func handleShake() {
+        guard isListening, Date().timeIntervalSince(lastShake) > minInterval else { return }
+        lastShake = Date()
+
+        AudioServicesPlayAlertSound(kSystemSoundID_Vibrate)
+        notifyListeners("shake", data: [:])
+    }
+
+    deinit {
+        if let shakeObserver { NotificationCenter.default.removeObserver(shakeObserver) }
+        stopAccelerometer()
     }
 }
